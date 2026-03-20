@@ -6,7 +6,7 @@ export default function ExamHistory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/api/exams/sessions/history/')
+    api.get(`${import.meta.env.VITE_API_BASE_URL}/api/exams/sessions/history/`)
       .then((res) => {
         setHistory(res.data);
         setLoading(false);
