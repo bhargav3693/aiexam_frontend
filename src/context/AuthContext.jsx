@@ -31,27 +31,30 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
+    const payload = { email, password };
+    console.log("Payload:", payload);
     try {
       const { data } = await api.post('auth/login/', 
-        { email, password },
+        payload,
         { headers: { 'Bypass-Tunnel-Reminder': 'true' } }
       );
       localStorage.setItem('access', data.access);
       localStorage.setItem('refresh', data.refresh);
       setUser(data.user || null);
-      // fetch full profile
       await fetchProfile();
       return data;
     } catch (err) {
-      console.error("Login Error:", err);
+      console.error("API Error:", err.response?.data);
       throw err;
     }
   };
 
   const register = async (email, full_name, password, confirm_password) => {
+    const payload = { email, full_name, password, confirm_password };
+    console.log("Payload:", payload);
     try {
       const { data } = await api.post('auth/register/', 
-        { email, full_name, password, confirm_password },
+        payload,
         { headers: { 'Bypass-Tunnel-Reminder': 'true' } }
       );
       localStorage.setItem('access', data.access);
@@ -59,7 +62,7 @@ export function AuthProvider({ children }) {
       setUser(data.user);
       return data;
     } catch (err) {
-      console.error("Register Error:", err);
+      console.error("API Error:", err.response?.data);
       throw err;
     }
   };
