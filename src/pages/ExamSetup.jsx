@@ -16,7 +16,7 @@ export default function ExamSetup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get('api/exams/topics/')
+    api.get('/api/exams/topics/')
       .then(({ data }) => setTopics(data))
       .catch(() => setError('Failed to load topics.'))
       .finally(() => setLoading(false));
@@ -36,7 +36,7 @@ export default function ExamSetup() {
     setError('');
     setSubmitting(true);
     try {
-      const { data } = await api.post('api/exams/sessions/', {
+      const { data } = await api.post('/api/exams/sessions/', {
         topic_ids: selected,
         time_limit_minutes: timeLimit,
       });
