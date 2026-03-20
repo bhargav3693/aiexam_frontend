@@ -70,8 +70,8 @@ export default function ExamTaking() {
   // Fetch Session and Questions
   useEffect(() => {
     Promise.all([
-      api.get(`/exams/sessions/${id}/`),
-      api.get(`/exams/sessions/${id}/questions/`)
+      api.get(`api/exams/sessions/${id}/`),
+      api.get(`api/exams/sessions/${id}/questions/`)
     ])
       .then(([sessRes, qRes]) => {
         setSession(sessRes.data);
@@ -95,7 +95,7 @@ export default function ExamTaking() {
         violation_count: lockedOut ? violations + 1 : violations,
         is_locked_out: lockedOut
       };
-      const { data } = await api.post(`/exams/sessions/${id}/submit/`, payload);
+      const { data } = await api.post(`api/exams/sessions/${id}/submit/`, payload);
       navigate(`/exam/${id}/results`, { state: { result: data, timeout, lockedOut } });
     } catch (err) {
       console.error('Failed to submit exam', err);
@@ -167,7 +167,7 @@ export default function ExamTaking() {
 
     setTranslating(true);
     try {
-      const { data } = await api.post('/exams/translate/', { question, language: lang });
+      const { data } = await api.post('api/exams/translate/', { question, language: lang });
       setTranslations(prev => ({ ...prev, [cacheKey]: data }));
     } catch (err) {
       console.error('CRITICAL ERROR: Translation API failed:', err.response?.data || err.message);

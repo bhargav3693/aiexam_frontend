@@ -6,7 +6,7 @@ export default function ExamHistory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/exams/sessions/history/')
+    api.get('api/exams/sessions/history/')
       .then((res) => {
         setHistory(res.data);
         setLoading(false);

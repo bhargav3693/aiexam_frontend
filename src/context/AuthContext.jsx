@@ -17,10 +17,10 @@ export function AuthProvider({ children }) {
   }, []);
 
   const fetchProfile = async () => {
-    const fullUrl = (api.defaults.baseURL || '') + 'auth/profile/';
+    const fullUrl = (api.defaults.baseURL || '') + '/api/auth/profile/';
     console.log("Calling Profile URL:", fullUrl);
     try {
-      const { data } = await api.get('auth/profile/', {
+      const { data } = await api.get('api/auth/profile/', {
         headers: { 'Bypass-Tunnel-Reminder': 'true' }
       });
       setUser(data);
@@ -33,10 +33,10 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const fullUrl = (api.defaults.baseURL || '') + 'auth/login/';
+    const fullUrl = (api.defaults.baseURL || '') + '/api/auth/login/';
     console.log("Calling Login URL:", fullUrl);
     try {
-      const { data } = await api.post('auth/login/', 
+      const { data } = await api.post('api/auth/login/', 
         { email, password },
         { headers: { 'Bypass-Tunnel-Reminder': 'true' } }
       );
@@ -53,10 +53,10 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (email, full_name, password, confirm_password) => {
-    const fullUrl = (api.defaults.baseURL || '') + 'auth/register/';
+    const fullUrl = (api.defaults.baseURL || '') + '/api/auth/register/';
     console.log("Calling Register URL:", fullUrl);
     try {
-      const { data } = await api.post('auth/register/', 
+      const { data } = await api.post('api/auth/register/', 
         { email, full_name, password, confirm_password },
         { headers: { 'Bypass-Tunnel-Reminder': 'true' } }
       );
