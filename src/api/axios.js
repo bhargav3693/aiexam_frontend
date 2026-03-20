@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/',
+  baseURL: `${import.meta.env.VITE_API_BASE_URL || ''}/api`.replace(/([^:]\/)\/+/g, "$1"),
 });
 
 // Attach JWT access token and Localtunnel bypass to every request
@@ -27,8 +27,7 @@ api.interceptors.response.use(
         const refresh = localStorage.getItem('refresh');
         if (!refresh) throw new Error('No refresh token');
         
-        const refreshURL = (import.meta.env.VITE_API_BASE_URL || '/api') + '/auth/refresh/';
-        const { data } = await axios.post(refreshURL, { refresh });
+        const { data } = await axios.post(`${api.defaults.baseURL}/auth/refresh/`.replace(/([^:]\/)\/+/g, "$1"), { refresh });
         localStorage.setItem('access', data.access);
         original.headers.Authorization = `Bearer ${data.access}`;
         return api(original);

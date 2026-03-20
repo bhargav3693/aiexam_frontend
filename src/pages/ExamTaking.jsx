@@ -69,10 +69,9 @@ export default function ExamTaking() {
 
   // Fetch Session and Questions
   useEffect(() => {
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/api\/?$/, '');
     Promise.all([
-      api.get(`${baseUrl}/api/exams/sessions/${id}/`),
-      api.get(`${baseUrl}/api/exams/sessions/${id}/questions/`)
+      api.get(`exams/sessions/${id}/`),
+      api.get(`exams/sessions/${id}/questions/`)
     ])
       .then(([sessRes, qRes]) => {
         setSession(sessRes.data);
@@ -96,8 +95,7 @@ export default function ExamTaking() {
         violation_count: lockedOut ? violations + 1 : violations,
         is_locked_out: lockedOut
       };
-      const baseUrl = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/api\/?$/, '');
-      const { data } = await api.post(`${baseUrl}/api/exams/sessions/${id}/submit/`, payload);
+      const { data } = await api.post(`exams/sessions/${id}/submit/`, payload);
       navigate(`/exam/${id}/results`, { state: { result: data, timeout, lockedOut } });
     } catch (err) {
       console.error('Failed to submit exam', err);
@@ -169,8 +167,7 @@ export default function ExamTaking() {
 
     setTranslating(true);
     try {
-      const baseUrl = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/api\/?$/, '');
-      const { data } = await api.post(`${baseUrl}/api/exams/translate/`, { question, language: lang });
+      const { data } = await api.post('exams/translate/', { question, language: lang });
       setTranslations(prev => ({ ...prev, [cacheKey]: data }));
     } catch (err) {
       console.error('CRITICAL ERROR: Translation API failed:', err.response?.data || err.message);
