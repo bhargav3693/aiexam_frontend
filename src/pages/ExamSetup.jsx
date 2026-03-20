@@ -16,7 +16,8 @@ export default function ExamSetup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get(`${import.meta.env.VITE_API_BASE_URL}/api/exams/topics/`)
+    const baseUrl = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/api\/?$/, '');
+    api.get(`${baseUrl}/api/exams/topics/`)
       .then(({ data }) => setTopics(data))
       .catch(() => setError('Failed to load topics.'))
       .finally(() => setLoading(false));
@@ -36,7 +37,8 @@ export default function ExamSetup() {
     setError('');
     setSubmitting(true);
     try {
-      const { data } = await api.post(`${import.meta.env.VITE_API_BASE_URL}/api/exams/sessions/`, {
+      const baseUrl = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/api\/?$/, '');
+      const { data } = await api.post(`${baseUrl}/api/exams/sessions/`, {
         topic_ids: selected,
         time_limit_minutes: timeLimit,
       });
