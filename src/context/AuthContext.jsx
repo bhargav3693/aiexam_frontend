@@ -18,10 +18,9 @@ export function AuthProvider({ children }) {
 
   const fetchProfile = async () => {
     const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
-    const fullUrl = `${baseUrl}/api/auth/profile/`.replace(/([^:]\/)\/+/g, "$1");
-    console.log("Calling Profile URL:", fullUrl);
+    console.log("Full API URL being called:", `${baseUrl}/api/auth/profile/`);
     try {
-      const { data } = await api.get('/api/auth/profile/', {
+      const { data } = await api.get(`${baseUrl}/api/auth/profile/`, {
         headers: { 'Bypass-Tunnel-Reminder': 'true' }
       });
       setUser(data);
@@ -35,10 +34,9 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
-    const fullUrl = `${baseUrl}/api/auth/login/`.replace(/([^:]\/)\/+/g, "$1");
-    console.log("Calling Login URL:", fullUrl);
+    console.log("Full API URL being called:", `${baseUrl}/api/auth/login/`);
     try {
-      const { data } = await api.post('/api/auth/login/', 
+      const { data } = await api.post(`${baseUrl}/api/auth/login/`, 
         { email, password },
         { headers: { 'Bypass-Tunnel-Reminder': 'true' } }
       );
@@ -56,10 +54,9 @@ export function AuthProvider({ children }) {
 
   const register = async (email, full_name, password, confirm_password) => {
     const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
-    const fullUrl = `${baseUrl}/api/auth/register/`.replace(/([^:]\/)\/+/g, "$1");
-    console.log("Calling Register URL:", fullUrl);
+    console.log("Full API URL being called:", `${baseUrl}/api/auth/register/`);
     try {
-      const { data } = await api.post('/api/auth/register/', 
+      const { data } = await api.post(`${baseUrl}/api/auth/register/`, 
         { email, full_name, password, confirm_password },
         { headers: { 'Bypass-Tunnel-Reminder': 'true' } }
       );
