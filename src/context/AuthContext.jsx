@@ -17,7 +17,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const fetchProfile = async () => {
-    const fullUrl = (api.defaults.baseURL || '') + '/api/auth/profile/';
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    const fullUrl = `${baseUrl}/api/auth/profile/`.replace(/([^:]\/)\/+/g, "$1");
     console.log("Calling Profile URL:", fullUrl);
     try {
       const { data } = await api.get('/api/auth/profile/', {
@@ -33,7 +34,8 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const fullUrl = (api.defaults.baseURL || '') + '/api/auth/login/';
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    const fullUrl = `${baseUrl}/api/auth/login/`.replace(/([^:]\/)\/+/g, "$1");
     console.log("Calling Login URL:", fullUrl);
     try {
       const { data } = await api.post('/api/auth/login/', 
@@ -53,7 +55,8 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (email, full_name, password, confirm_password) => {
-    const fullUrl = (api.defaults.baseURL || '') + '/api/auth/register/';
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    const fullUrl = `${baseUrl}/api/auth/register/`.replace(/([^:]\/)\/+/g, "$1");
     console.log("Calling Register URL:", fullUrl);
     try {
       const { data } = await api.post('/api/auth/register/', 
