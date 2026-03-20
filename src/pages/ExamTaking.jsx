@@ -171,7 +171,11 @@ export default function ExamTaking() {
       setTranslations(prev => ({ ...prev, [cacheKey]: data }));
     } catch (err) {
       console.error('CRITICAL ERROR: Translation API failed:', err.response?.data || err.message);
-      alert("Translation Failed: " + (err.response?.data?.error || err.message));
+      if (err.response?.status === 429 || String(err.response?.data?.error).includes("429")) {
+        alert("Server is busy or API quota reached. Please wait for 1 minute and try again.");
+      } else {
+        alert("Translation Failed: " + (err.response?.data?.error || err.message));
+      }
     } finally {
       setTranslating(false);
     }

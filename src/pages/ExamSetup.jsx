@@ -9,6 +9,7 @@ export default function ExamSetup() {
   const [topics, setTopics] = useState([]);
   const [selected, setSelected] = useState([]);
   const [timeLimit, setTimeLimit] = useState(30);
+  const [language, setLanguage] = useState('English');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -39,10 +40,15 @@ export default function ExamSetup() {
       const { data } = await api.post('exams/sessions/', {
         topic_ids: selected,
         time_limit_minutes: timeLimit,
+        language: language,
       });
       navigate(`/exam/${data.id}`);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to create exam session.');
+      if (err.response?.status === 429 || err.response?.data?.detail?.includes("429")) {
+        setError('Server is busy or API quota reached. Please wait for 1 minute and try again.');
+      } else {
+        setError(err.response?.data?.detail || 'Failed to create exam session.');
+      }
     } finally {
       setSubmitting(false);
     }
@@ -89,6 +95,25 @@ export default function ExamSetup() {
             ))}
           </div>
         )}
+
+        <div className="section-title">Exam Language</div>
+        <div style={{ marginBottom: 30 }}>
+          <select 
+            value={language} 
+            onChange={(e) => setLanguage(e.target.value)}
+            style={{ width: '100%', padding: '12px', borderRadius: 8, background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border)', fontSize: 16 }}
+          >
+            <option value="English">English</option>
+            <option value="Telugu">Telugu</option>
+            <option value="Spanish">Spanish</option>
+            <option value="French">French</option>
+            <option value="German">German</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Arabic">Arabic</option>
+          </select>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>The AI will generate all questions directly in this language.</p>
+        </div>
 
         <div className="section-title">Time Limit</div>
         <div className="time-control">
