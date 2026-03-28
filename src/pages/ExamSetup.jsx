@@ -6,7 +6,11 @@ import api from '../api/axios';
 const DIFFICULTY_LABELS = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
 
 export default function ExamSetup() {
-  const [topics, setTopics] = useState([{ id: 1, name: 'Quantitative Aptitude' }, { id: 2, name: 'General Intelligence & Reasoning' }, { id: 3, name: 'General Awareness' }]);
+  const [topics, setTopics] = useState([
+    { id: 13, name: 'Quantitative Aptitude', difficulty: 'medium', icon: '🧮' }, 
+    { id: 14, name: 'Logical Reasoning', difficulty: 'medium', icon: '🧩' }, 
+    { id: 16, name: 'General Awareness', difficulty: 'easy', icon: '🌍' }
+  ]);
   const [selected, setSelected] = useState([]);
   const [timeLimit, setTimeLimit] = useState(30);
   const [language, setLanguage] = useState('English');
