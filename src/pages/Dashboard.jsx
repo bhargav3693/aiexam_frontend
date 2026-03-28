@@ -19,7 +19,7 @@ const NAV_CARDS = [
     border: 'rgba(16,185,129,0.35)',
   },
   {
-    to: '/exam/setup',
+    to: '/history',
     icon: '📊',
     title: 'My History',
     desc: 'Review your past exam sessions, scores, and performance trends.',
@@ -27,7 +27,7 @@ const NAV_CARDS = [
     border: 'rgba(245,158,11,0.35)',
   },
   {
-    to: '/exam/setup',
+    to: '/profile',
     icon: '⚙️',
     title: 'Settings',
     desc: 'Manage your profile, preferences, and notification settings.',
@@ -42,6 +42,8 @@ export default function Dashboard() {
   const initials = user?.full_name
     ? user.full_name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
     : user?.email?.[0]?.toUpperCase() || '?';
+
+
 
   return (
     <>
@@ -99,6 +101,8 @@ export default function Dashboard() {
             </Link>
           ))}
         </div>
+
+
       </main>
     </>
   );

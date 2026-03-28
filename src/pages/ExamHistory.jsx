@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api/axios';
 
 export default function ExamHistory() {
@@ -39,7 +40,8 @@ export default function ExamHistory() {
       ) : (
         <div style={{ display: 'grid', gap: 16 }}>
           {history.map((session) => (
-            <div
+            <Link
+              to={`/history/${session.id}`}
               key={session.id}
               style={{
                 background: 'rgba(255,255,255,0.03)',
@@ -48,8 +50,13 @@ export default function ExamHistory() {
                 padding: 24,
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center'
+                alignItems: 'center',
+                textDecoration: 'none',
+                color: 'inherit',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
               }}
+              className="history-card-hover"
             >
               <div>
                 <h3 style={{ margin: '0 0 8px 0', fontSize: 18, color: 'var(--text-primary)' }}>
@@ -76,7 +83,7 @@ export default function ExamHistory() {
                   <div style={{ fontSize: 12, color: '#ef4444', marginTop: 4 }}>VOID</div>
                 )}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

@@ -104,13 +104,17 @@ export default function ExamSetup() {
             style={{ width: '100%', padding: '12px', borderRadius: 8, background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border)', fontSize: 16 }}
           >
             <option value="English">English</option>
-            <option value="Telugu">Telugu</option>
-            <option value="Spanish">Spanish</option>
-            <option value="French">French</option>
-            <option value="German">German</option>
-            <option value="Chinese">Chinese</option>
-            <option value="Hindi">Hindi</option>
-            <option value="Arabic">Arabic</option>
+            <option value="Hindi">Hindi (हिंदी)</option>
+            <option value="Telugu">Telugu (తెలుగు)</option>
+            <option value="Tamil">Tamil (தமிழ்)</option>
+            <option value="Marathi">Marathi (मराठी)</option>
+            <option value="Bengali">Bengali (বাংলা)</option>
+            <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+            <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+            <option value="Malayalam">Malayalam (മലയാളം)</option>
+            <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+            <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+            <option value="Urdu">Urdu (اردو)</option>
           </select>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>The AI will generate all questions directly in this language.</p>
         </div>

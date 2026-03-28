@@ -3,7 +3,8 @@ import { useAuth } from '../context/AuthContext';
 
 const NAV_ITEMS = [
   { path: '/dashboard', label: 'Home', icon: '🏠' },
-  { path: '#', label: 'Profile', icon: '👤' }, // placeholder
+  { path: '/translate', label: 'Translate PDFs', icon: '📄' },
+  { path: '/profile', label: 'Profile', icon: '👤' },
   { path: '/exam/setup', label: 'Take Exam', icon: '📝' },
   { path: '/history', label: 'Exam History', icon: '⏳' },
 ];
@@ -46,7 +47,9 @@ export default function Sidebar() {
           <div className="user-avatar">{initials}</div>
           <div className="user-info">
             <span className="user-name">{user?.full_name || user?.email}</span>
-            <span className="user-role">Student</span>
+            <span className="user-role" style={{ color: user?.is_staff ? '#a5b4fc' : 'var(--text-muted)' }}>
+              {user?.is_staff ? 'Administrator' : 'Student'}
+            </span>
           </div>
         </div>
         <button className="btn btn-secondary logout-btn" onClick={logout}>

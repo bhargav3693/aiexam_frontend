@@ -59,7 +59,7 @@ export default function ExamTaking() {
   const [loading, setLoading] = useState(true);
   
   // Translation State
-  const [targetLang, setTargetLang] = useState('en');
+  const [targetLang, setTargetLang] = useState('English');
   const [translating, setTranslating] = useState(false);
   const [translations, setTranslations] = useState({});
   
@@ -110,8 +110,40 @@ export default function ExamTaking() {
 
     const handleContextMenu = (e) => {
       e.preventDefault();
-      alert("Right-click is disabled during the exam.");
+      // Using a custom on-screen notification instead of a native alert
+      // Native alerts steal window focus, triggering 'blur' and terminating the exam!
+      const warningBanner = document.createElement('div');
+      warningBanner.style.position = 'fixed';
+      warningBanner.style.top = '20px';
+      warningBanner.style.left = '50%';
+      warningBanner.style.transform = 'translateX(-50%)';
+      warningBanner.style.background = '#ef4444';
+      warningBanner.style.color = '#fff';
+      warningBanner.style.padding = '12px 24px';
+      warningBanner.style.borderRadius = '8px';
+      warningBanner.style.zIndex = '9999';
+      warningBanner.style.fontWeight = 'bold';
+      warningBanner.style.boxShadow = '0 10px 25px rgba(0,0,0,0.5)';
+      warningBanner.innerText = '⚠️ Right-click is completely restricted during the exam.';
+      document.body.appendChild(warningBanner);
+      
+      setTimeout(() => {
+        if (document.body.contains(warningBanner)) {
+          document.body.removeChild(warningBanner);
+        }
+      }, 3000);
     };
+
+    // Fullscreen behavior when entering exam
+    const enterFullscreen = () => {
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(err => {
+          console.warn('Fullscreen request failed:', err);
+        });
+      }
+    };
+    enterFullscreen();
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
@@ -151,6 +183,11 @@ export default function ExamTaking() {
       window.removeEventListener('blur', handleBlur);
       document.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      
+      // Exit fullscreen when leaving exam
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(err => console.warn(err));
+      }
     };
   }, [loading, submitExam]);
 
@@ -160,7 +197,7 @@ export default function ExamTaking() {
 
   const handleTranslate = async (question, lang) => {
     setTargetLang(lang);
-    if (lang === 'en') return;
+    if (lang === 'English') return;
     
     const cacheKey = `${question.id}_${lang}`;
     if (translations[cacheKey]) return;
@@ -185,7 +222,7 @@ export default function ExamTaking() {
     if (current < questions.length - 1) {
       const nextQ = questions[current + 1];
       setCurrent(current + 1);
-      if (targetLang !== 'en') {
+      if (targetLang !== 'English') {
         handleTranslate(nextQ, targetLang);
       }
     } else {
@@ -216,7 +253,7 @@ export default function ExamTaking() {
   const progress = ((current + 1) / totalQ) * 100;
   const selectedAnswer = answers[q.id];
 
-  const displayQ = (targetLang !== 'en' && translations[`${q.id}_${targetLang}`]) 
+  const displayQ = (targetLang !== 'English' && translations[`${q.id}_${targetLang}`]) 
     ? translations[`${q.id}_${targetLang}`] 
     : q;
 
@@ -260,14 +297,18 @@ export default function ExamTaking() {
                 style={{ padding: '6px 12px', borderRadius: 8, background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border)', fontSize: 13, cursor: 'pointer' }}
                 disabled={translating}
               >
-                <option value="en">English (Original)</option>
-                <option value="te">Telugu</option>
-                <option value="es">Spanish</option>
-                <option value="fr">French</option>
-                <option value="de">German</option>
-                <option value="zh">Chinese</option>
-                <option value="hi">Hindi</option>
-                <option value="ar">Arabic</option>
+                <option value="English">English (Original)</option>
+                <option value="Hindi">Hindi (हिंदी)</option>
+                <option value="Telugu">Telugu (తెలుగు)</option>
+                <option value="Tamil">Tamil (தமிழ்)</option>
+                <option value="Marathi">Marathi (मराठी)</option>
+                <option value="Bengali">Bengali (বাংলা)</option>
+                <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                <option value="Malayalam">Malayalam (മലയാളം)</option>
+                <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
+                <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                <option value="Urdu">Urdu (اردو)</option>
               </select>
               {translating && <span style={{ fontSize: 12, color: 'var(--primary)', fontStyle: 'italic' }}>Translating...</span>}
             </div>

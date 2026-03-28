@@ -16,8 +16,17 @@ export default function Login() {
     setError('');
     setLoading(true);
     try {
-      await login(form.email, form.password);
-      navigate('/dashboard');
+      const response = await login(form.email, form.password);
+      
+      // Explicitly check the user's role here!
+      // This allows both Students and Admins to use exactly THIS same login page.
+      if (response?.user?.is_staff) {
+        // Hard redirect for Admins
+        window.location.href = '/admin';
+      } else {
+        // Hard redirect for Students
+        window.location.href = '/dashboard';
+      }
     } catch (err) {
       const detail = err.response?.data?.detail || err.message || 'Invalid credentials. Please try again.';
       setError(detail);

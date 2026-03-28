@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useParams, useLocation, Link, Navigate } from 'react-router-dom';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 export default function Results() {
+  const [showAnswers, setShowAnswers] = useState(false);
   const { id } = useParams();
   const { state } = useLocation();
 
@@ -113,6 +115,18 @@ export default function Results() {
                 📋 Detailed Review
               </h2>
               
+              {!showAnswers ? (
+                <div style={{ textAlign: 'center', padding: '40px 0', background: 'var(--bg-card)', borderRadius: 16, border: '1px dashed var(--border)' }}>
+                  <button 
+                    onClick={() => setShowAnswers(true)} 
+                    className="btn btn-secondary" 
+                    style={{ padding: '12px 24px', fontSize: 16 }}
+                  >
+                    👁️ View Detailed Answers
+                  </button>
+                  <p style={{ marginTop: 12, color: 'var(--text-muted)', fontSize: 14 }}>Click to reveal the correct answers and your choices.</p>
+                </div>
+              ) : (
               <div style={{ display: 'grid', gap: 20 }}>
                 {detailed_results.map((q, idx) => (
                   <div key={idx} style={{ 
@@ -174,6 +188,7 @@ export default function Results() {
                   </div>
                 ))}
               </div>
+              )}
             </div>
           )}
 

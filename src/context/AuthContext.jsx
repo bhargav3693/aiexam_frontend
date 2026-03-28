@@ -22,6 +22,7 @@ export function AuthProvider({ children }) {
         headers: { 'Bypass-Tunnel-Reminder': 'true' }
       });
       setUser(data);
+      return data;
     } catch {
       localStorage.removeItem('access');
       localStorage.removeItem('refresh');
@@ -41,8 +42,8 @@ export function AuthProvider({ children }) {
       localStorage.setItem('access', data.access);
       localStorage.setItem('refresh', data.refresh);
       setUser(data.user || null);
-      await fetchProfile();
-      return data;
+      const userProfile = await fetchProfile();
+      return { ...data, user: userProfile };
     } catch (err) {
       console.error("API Error:", err.response?.data);
       throw err;
