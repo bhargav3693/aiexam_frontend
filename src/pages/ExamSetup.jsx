@@ -52,16 +52,26 @@ export default function ExamSetup() {
     try {
       const selectedNames = selected.map(id => topics.find(t => t.id === id)?.name).filter(Boolean);
       
+      // Explicitly pull token for bulletproof auth injection
+      const token = localStorage.getItem('access');
+      
       const { data } = await api.post('exams/force-start/', {
+        topic_names: selectedNames, // Backend God Mode handles names better
         topic_ids: selected,
-        topic_names: selectedNames,
         time_limit_minutes: timeLimit,
         language: language,
+      }, {
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
 
       // God Mode backend returns 200+{error} on failure, 201+{id} on success
       if (data.error) {
         console.error('BACKEND ERROR:', data.error);
+        alert(`Backend Rejection: ${JSON.stringify(data.error)}`); // Mobile debug
+        
         if (data.error.includes('429') || data.error.includes('RESOURCE_EXHAUSTED')) {
           setError('Server is busy or API quota reached. Please wait 1 minute and try again.');
         } else {
@@ -72,8 +82,9 @@ export default function ExamSetup() {
 
       navigate(`/exam/${data.id}`);
     } catch (err) {
-      // Log the exact Django rejection reason
-      console.error('DJANGO REJECTED BECAUSE:', err.response?.data);
+      // Log and Alert the exact rejection reason for mobile debugging
+      console.error('API CALL FAILED:', err.response?.data);
+      alert(`API Error: ${JSON.stringify(err.response?.data || err.message)}`);
       
       const djangoDetail = err.response?.data?.detail;
       const djangoErrors = err.response?.data;

@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "5ca60147-3e68-4aa8-a4f1-8fab0810114e"
+      }
+    },
+    "android": {
+      "package": "com.jhanchilakshmi.frontend"
+    }
+  }
+}
