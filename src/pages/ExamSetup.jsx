@@ -111,7 +111,7 @@ export default function ExamSetup() {
 
   return (
     <>
-      <main className="page-container animate-fade">
+      <main className="page-container animate-fade" style={{ overflowX: 'hidden' }}>
         <div className="page-header">
           <h1>Set Up Your Exam</h1>
           <p className="subtitle">Choose topics and set a time limit to begin</p>
@@ -120,7 +120,7 @@ export default function ExamSetup() {
         {error && <div className="error-banner">{error}</div>}
 
         <div className="section-title">Select Topics</div>
-        <div className="topics-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="topics-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 p-2">
           {topics && topics.length > 0 ? (
             topics.map((topic) => (
               <div
@@ -133,7 +133,7 @@ export default function ExamSetup() {
                 tabIndex={0}
                 onKeyDown={(e) => e.key === 'Enter' && toggleTopic(topic.id)}
               >
-                <div className="topic-icon">{topic.icon}</div>
+                <div className="topic-icon" style={{ fontSize: 'clamp(1.25rem, 5vw, 2rem)' }}>{topic.icon}</div>
                 <div className="topic-name">{topic.name}</div>
                 {topic.difficulty && (
                   <div className="topic-meta">
