@@ -6,22 +6,22 @@ import api from '../api/axios';
 const DIFFICULTY_LABELS = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
 
 export default function ExamSetup() {
-  const [topics, setTopics] = useState([]);
+  const [topics, setTopics] = useState([{ id: 1, name: 'Quantitative Aptitude' }, { id: 2, name: 'General Intelligence & Reasoning' }, { id: 3, name: 'General Awareness' }]);
   const [selected, setSelected] = useState([]);
   const [timeLimit, setTimeLimit] = useState(30);
   const [language, setLanguage] = useState('English');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    api.get('exams/topics/')
-      .then(({ data }) => setTopics(data))
-      .catch(() => setError('Failed to load topics.'))
-      .finally(() => setLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   api.get('exams/topics/')
+  //     .then(({ data }) => setTopics(data))
+  //     .catch(() => setError('Failed to load topics.'))
+  //     .finally(() => setLoading(false));
+  // }, []);
 
   const toggleTopic = (id) => {
     setSelected((prev) =>
@@ -67,16 +67,12 @@ export default function ExamSetup() {
         {error && <div className="error-banner">{error}</div>}
 
         <div className="section-title">Select Topics</div>
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
-            Loading topics…
-          </div>
-        ) : (
-          <div className="topics-grid">
-            {topics.map((topic) => (
+        <div className="topics-grid">
+          {topics && topics.length > 0 ? (
+            topics.map((topic) => (
               <div
-                key={topic.id}
-                id={`topic-${topic.id}`}
+                key={topic.id || topic.name}
+                id={`topic-${topic.id || topic.name}`}
                 className={`topic-chip${selected.includes(topic.id) ? ' selected' : ''}`}
                 onClick={() => toggleTopic(topic.id)}
                 role="checkbox"
@@ -86,15 +82,19 @@ export default function ExamSetup() {
               >
                 <div className="topic-icon">{topic.icon}</div>
                 <div className="topic-name">{topic.name}</div>
-                <div className="topic-meta">
-                  <span className={`badge badge-${topic.difficulty}`}>
-                    {DIFFICULTY_LABELS[topic.difficulty]}
-                  </span>
-                </div>
+                {topic.difficulty && (
+                  <div className="topic-meta">
+                    <span className={`badge badge-${topic.difficulty}`}>
+                      {DIFFICULTY_LABELS[topic.difficulty]}
+                    </span>
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        )}
+            ))
+          ) : (
+            <p>Loading topics...</p>
+          )}
+        </div>
 
         <div className="section-title">Exam Language</div>
         <div style={{ marginBottom: 30 }}>
