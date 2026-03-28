@@ -1112,3 +1112,40 @@ input[type='range']::-webkit-slider-thumb:hover {
   .dashboard-grid { grid-template-columns: 1fr; }
   .topics-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ─── Tailwind-like Grid Utility Classes ──────────────────── */
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.gap-4 { gap: 1rem; }
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 768px) {
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ─── Mobile UX Optimizations ────────────────────────────── */
+@media (max-width: 640px) {
+  .btn {
+    padding: 18px 24px;
+    font-size: 16px;
+  }
+  
+  .topic-chip {
+    padding: 24px 20px;
+    font-size: 15px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .topic-name {
+    font-size: 15px;
+    font-weight: 600;
+  }
+}

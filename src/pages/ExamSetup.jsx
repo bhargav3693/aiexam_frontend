@@ -120,7 +120,7 @@ export default function ExamSetup() {
         {error && <div className="error-banner">{error}</div>}
 
         <div className="section-title">Select Topics</div>
-        <div className="topics-grid">
+        <div className="topics-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {topics && topics.length > 0 ? (
             topics.map((topic) => (
               <div
