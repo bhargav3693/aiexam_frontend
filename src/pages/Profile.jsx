@@ -1,4 +1,5 @@
 import { useAuth } from '../context/AuthContext';
+import api from '../api/axios';
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -53,7 +54,7 @@ export default function Profile() {
               <button className="btn btn-danger" onClick={async () => {
                 if (!window.confirm("Are you sure you want to deactivate your active account? You will be immediately logged out and permanently lose access unless an Admin restores you.")) return;
                 try {
-                  await import('../api/axios').then(module => module.default.delete('/auth/profile/'));
+                  await api.delete('/auth/profile/');
                   logout();
                 } catch (err) {
                   alert("Failed to deactivate account: " + (err.response?.data ? JSON.stringify(err.response.data) : err.message));
