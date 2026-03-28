@@ -7,9 +7,18 @@ const DIFFICULTY_LABELS = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
 
 export default function ExamSetup() {
   const [topics, setTopics] = useState([
-    { id: 13, name: 'Quantitative Aptitude', difficulty: 'medium', icon: '🧮' }, 
-    { id: 14, name: 'Logical Reasoning', difficulty: 'medium', icon: '🧩' }, 
-    { id: 16, name: 'General Awareness', difficulty: 'easy', icon: '🌍' }
+    { id: 1, name: 'Quantitative Aptitude', difficulty: 'hard', icon: '🧮' },
+    { id: 2, name: 'General Intelligence & Reasoning', difficulty: 'hard', icon: '🧩' },
+    { id: 3, name: 'General Awareness', difficulty: 'medium', icon: '🌍' },
+    { id: 4, name: 'Current Affairs', difficulty: 'medium', icon: '📰' },
+    { id: 5, name: 'Indian History & Culture', difficulty: 'easy', icon: '🏺' },
+    { id: 6, name: 'Geography of India & World', difficulty: 'medium', icon: '🗺️' },
+    { id: 7, name: 'General Science (Physics, Chem, Bio)', difficulty: 'medium', icon: '🧪' },
+    { id: 8, name: 'Indian Polity & Constitution', difficulty: 'medium', icon: '🏛️' },
+    { id: 9, name: 'Indian Economy', difficulty: 'medium', icon: '📈' },
+    { id: 10, name: 'Computer & Application Basics', difficulty: 'easy', icon: '💻' },
+    { id: 11, name: 'Static GK', difficulty: 'easy', icon: '📚' },
+    { id: 12, name: 'Data Interpretation', difficulty: 'hard', icon: '📊' }
   ]);
   const [selected, setSelected] = useState([]);
   const [timeLimit, setTimeLimit] = useState(30);
@@ -41,17 +50,46 @@ export default function ExamSetup() {
     setError('');
     setSubmitting(true);
     try {
-      const { data } = await api.post('exams/sessions/', {
+      const selectedNames = selected.map(id => topics.find(t => t.id === id)?.name).filter(Boolean);
+      
+      const { data } = await api.post('exams/force-start/', {
         topic_ids: selected,
+        topic_names: selectedNames,
         time_limit_minutes: timeLimit,
         language: language,
       });
+
+      // God Mode backend returns 200+{error} on failure, 201+{id} on success
+      if (data.error) {
+        console.error('BACKEND ERROR:', data.error);
+        if (data.error.includes('429') || data.error.includes('RESOURCE_EXHAUSTED')) {
+          setError('Server is busy or API quota reached. Please wait 1 minute and try again.');
+        } else {
+          setError(`Backend error: ${data.error}`);
+        }
+        return;
+      }
+
       navigate(`/exam/${data.id}`);
     } catch (err) {
-      if (err.response?.status === 429 || err.response?.data?.detail?.includes("429")) {
+      // Log the exact Django rejection reason
+      console.error('DJANGO REJECTED BECAUSE:', err.response?.data);
+      
+      const djangoDetail = err.response?.data?.detail;
+      const djangoErrors = err.response?.data;
+      
+      if (err.response?.status === 429 || (typeof djangoDetail === 'string' && djangoDetail.includes('429'))) {
         setError('Server is busy or API quota reached. Please wait for 1 minute and try again.');
+      } else if (djangoDetail) {
+        setError(djangoDetail);
+      } else if (djangoErrors && typeof djangoErrors === 'object') {
+        // Flatten all field errors into a readable string
+        const msg = Object.entries(djangoErrors)
+          .map(([field, errs]) => `${field}: ${Array.isArray(errs) ? errs.join(', ') : errs}`)
+          .join(' | ');
+        setError(msg || 'Failed to create exam session.');
       } else {
-        setError(err.response?.data?.detail || 'Failed to create exam session.');
+        setError('Failed to create exam session.');
       }
     } finally {
       setSubmitting(false);
