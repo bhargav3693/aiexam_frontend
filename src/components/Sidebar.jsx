@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { path: '/history', label: 'Exam History', icon: '⏳' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ onMobileClose, isMobileOverlay = false }) {
   const { user, logout } = useAuth();
   const location = useLocation();
 
@@ -19,11 +19,19 @@ export default function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-header">
-        <Link to="/dashboard" className="navbar-brand">
+      <div className="sidebar-header flex justify-between items-center">
+        <Link to="/dashboard" className="navbar-brand" onClick={onMobileClose}>
           <div className="brand-icon">🎓</div>
           <span>ExamAI</span>
         </Link>
+        {isMobileOverlay && (
+          <button 
+            onClick={onMobileClose} 
+            className="md:hidden w-8 h-8 flex justify-center items-center rounded-lg bg-[rgba(255,255,255,0.05)] border border-[var(--border)] text-white hover:bg-[rgba(239,68,68,0.2)] hover:border-[rgba(239,68,68,0.4)] transition-all active:scale-95 text-lg leading-none"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       <nav className="sidebar-nav">
@@ -34,6 +42,7 @@ export default function Sidebar() {
               key={item.label}
               to={item.path}
               className={`sidebar-link ${isActive ? 'active' : ''}`}
+              onClick={onMobileClose}
             >
               <span className="sidebar-icon">{item.icon}</span>
               {item.label}
