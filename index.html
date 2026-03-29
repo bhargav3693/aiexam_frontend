@@ -2,10 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- ===================== PWA & Mobile Meta Tags ===================== -->
+
+    <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="ExamAI — AI-powered exam preparation platform. Register, select topics, and test your knowledge." />
-    <title>ExamAI — Smart Exam Preparation</title>
+
+    <!-- Primary Meta -->
+    <meta name="description" content="AI-powered exam preparation platform. Register, select topics, and test your knowledge with adaptive AI questions." />
+    <meta name="keywords" content="AI exam, exam preparation, adaptive learning, quiz, education" />
+    <meta name="author" content="AI Exam Portal" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Theme Color (Android Chrome address bar + PWA splash) -->
+    <meta name="theme-color" content="#1e1e2f" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/logo192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/logo512.png" />
+
+    <!-- ============= iOS / Apple PWA Support ============= -->
+    <!-- Makes it look like a native app when added to home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AI Exam" />
+    <!-- Apple touch icon (used when user adds to iOS home screen) -->
+    <link rel="apple-touch-icon" href="/icons/logo192.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/logo192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/logo512.png" />
+
+    <!-- ============= Open Graph (optional but good for sharing) ============= -->
+    <meta property="og:title" content="AI Exam Portal — Smart Exam Preparation" />
+    <meta property="og:description" content="AI-powered exam preparation. Adaptive questions, instant feedback." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/icons/logo512.png" />
+
+    <!-- ================================================================== -->
+
+    <title>AI Exam Portal — Smart Exam Preparation</title>
+
     <!-- Tailwind CSS injected for Admin Dashboard while preserving legacy CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
