@@ -70,7 +70,6 @@ export default function ExamSetup() {
       // God Mode backend returns 200+{error} on failure, 201+{id} on success
       if (data.error) {
         console.error('BACKEND ERROR:', data.error);
-        alert(`Backend Rejection: ${JSON.stringify(data.error)}`); // Mobile debug
         
         if (data.error.includes('429') || data.error.includes('RESOURCE_EXHAUSTED')) {
           setError('Server is busy or API quota reached. Please wait 1 minute and try again.');
@@ -82,9 +81,7 @@ export default function ExamSetup() {
 
       navigate(`/exam/${data.id}`);
     } catch (err) {
-      // Log and Alert the exact rejection reason for mobile debugging
       console.error('API CALL FAILED:', err.response?.data);
-      alert(`API Error: ${JSON.stringify(err.response?.data || err.message)}`);
       
       const djangoDetail = err.response?.data?.detail;
       const djangoErrors = err.response?.data;

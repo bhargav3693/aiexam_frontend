@@ -24,7 +24,7 @@ function GuestRoute({ children }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="loading-screen"><div className="spinner" /></div>;
   if (user) {
-    return <Navigate to={user.is_staff ? "/admin" : "/dashboard"} replace />;
+    return <Navigate to={(user.is_admin || user.is_staff) ? "/admin-dashboard" : "/dashboard"} replace />;
   }
   return children;
 }
@@ -34,7 +34,7 @@ function AdminRoute({ children }) {
   const token = localStorage.getItem('access');
   if (loading || (!user && token)) return <div className="loading-screen"><div className="spinner" /></div>;
   if (!user) return <Navigate to="/login" replace />;
-  if (!user.is_staff) return <Navigate to="/dashboard" replace />;
+  if (!user.is_staff && !user.is_admin) return <Navigate to="/dashboard" replace />;
   return children;
 }
 
@@ -63,7 +63,7 @@ function AppRoutes() {
       </Route>
 
       {/* Standalone Admin Route */}
-      <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+      <Route path="/admin-dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
 
       {/* Fullscreen Exam Route */}
       <Route path="/exam/:id" element={<ProtectedRoute><ExamTaking /></ProtectedRoute>} />

@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="ExamAI — AI-powered exam preparation platform. Register, select topics, and test your knowledge." />
     <title>ExamAI — Smart Exam Preparation</title>
+    <!-- Tailwind CSS injected for Admin Dashboard while preserving legacy CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        corePlugins: {
+          preflight: false,
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>

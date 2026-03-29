@@ -17,21 +17,15 @@ export default function Login() {
     setLoading(true);
     try {
       const response = await login(form.email, form.password);
-      
-      // Explicitly check the user's role here!
-      // This allows both Students and Admins to use exactly THIS same login page.
-      if (response?.user?.is_staff) {
-        // Hard redirect for Admins
-        window.location.href = '/admin';
+      // check the is_admin flag
+      if (response?.user?.is_admin || response?.user?.is_staff) {
+        navigate('/admin-dashboard', { replace: true });
       } else {
-        // Hard redirect for Students
-        window.location.href = '/dashboard';
+        navigate('/dashboard', { replace: true });
       }
     } catch (err) {
       const detail = err.response?.data?.detail || err.message || 'Invalid credentials. Please try again.';
       setError(detail);
-      // Explicitly forcing error to surface for mobile Localtunnel testing
-      alert("Login Error: " + detail);
     } finally {
       setLoading(false);
     }
